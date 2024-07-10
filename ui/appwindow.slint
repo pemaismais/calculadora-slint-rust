@@ -1,0 +1,177 @@
+import { Button, GridBox, VerticalBox, LineEdit } from "std-widgets.slint";
+
+
+component ButtonComp inherits Button {
+    height: 50px;
+    width: 100px;
+    clicked => {
+    }
+}
+
+export component Calc inherits Window {
+    callback result-clicked(string);
+    in property <string> result: "";
+    default-font-size: 18px;
+    width: 440px;
+    height: 600px;
+
+    // Grid main
+    GridBox {
+        preferred-width: 100%;
+        preferred-height: 100%;
+        spacing: 0;
+
+        // Grid do historico e input
+        GridBox {
+            col: 0;
+            row: 0;
+            preferred-width: 100%;
+            height: 50%;
+            spacing: 5px;
+            // tela do historico
+        Rectangle {
+                height: 70%;
+                background: cadetblue;
+                row: 0;
+                Text {
+                    color: black;
+                    font-weight: 500;
+                    text: root.result;
+                }
+            }
+
+            // tela de escrita
+                input := LineEdit {
+                row: 1;
+                width: 100%;
+            }
+        }
+
+        // Grid dos botoes
+    GridBox {
+            row: 1;
+            col: 0;
+            preferred-width: 100%;
+            height: 50%;
+            spacing: 0;
+            spacing-horizontal: 0;
+            // botoes de cima
+        GridLayout {
+                col: 0;
+                spacing: 5px;
+                padding-bottom: 5px;
+                padding-right: 5px;
+                ButtonComp {
+                    text: "AC";
+                }
+
+                ButtonComp {
+                    text: "+/-";
+                }
+
+                ButtonComp {
+                    text: "%";
+                }
+            }
+
+            // Numeros
+            GridLayout {
+                spacing: 5px;
+                row: 1;
+                Row {
+                    ButtonComp {
+                        text: "7";
+                    }
+
+                    ButtonComp {
+                        text: "8";
+                    }
+
+                    ButtonComp {
+                        text: "9";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "4";
+                    }
+
+                    ButtonComp {
+                        text: "5";
+                    }
+
+                    ButtonComp {
+                        text: "6";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "1";
+                    }
+
+                    ButtonComp {
+                        text: "2";
+                    }
+
+                    ButtonComp {
+                        text: "3";
+                    }
+                }
+
+                Row {
+                    Button {
+                        colspan: 2;
+                        text: "0";
+                    }
+
+                    ButtonComp {
+                        text: ",";
+                        col: 2;
+                    }
+                }
+            }
+
+            // operacoes
+            GridLayout {
+                spacing: 5px;
+                row: 0;
+                rowspan: 2;
+                col: 1;
+                Row {
+                    ButtonComp {
+                        text: "/";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "x";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "-";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "+";
+                    }
+                }
+
+                Row {
+                    ButtonComp {
+                        text: "=";
+                        clicked => {
+                            result-clicked(input.text);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
