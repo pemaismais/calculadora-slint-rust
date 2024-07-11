@@ -8,7 +8,7 @@ fn main() -> Result<(), slint::PlatformError> {
     ui.on_result_clicked(move |string| {
         let ui = ui_handle.unwrap();
         // transformando a string em int
-        let num: i64 = match string.trim().parse() {
+        let _num: i64 = match string.trim().parse() {
             Ok(parsed_num) => { 
                 let result = format!("{}", parsed_num);
                 ui.set_result(result.into());
@@ -16,7 +16,6 @@ fn main() -> Result<(), slint::PlatformError> {
             },
             Err(_) => {
                 let erro = format!("A variavel \"{}\" é desconhecida.", string.trim());
-                // Aqui você pode escolher como lidar com o erro, como sair do programa ou retornar um valor padrão
                 ui.set_result(erro.into());
                 return;
             }
