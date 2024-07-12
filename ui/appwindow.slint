@@ -12,7 +12,7 @@ export component Calc inherits Window {
     callback result-clicked(string);
     callback word-typed(string);
     in property <string> result: "";
-    in-out property <string> inputo: "";
+    in-out property <string> inputo: "0";
     default-font-size: 22px;
     width: 440px;
     height: 600px;
@@ -22,6 +22,9 @@ export component Calc inherits Window {
         key-pressed(event) => {
             if (event.text == Key.Backspace) {
                 word-typed("delete");
+            }else if (event.text == Key.Return) {
+                result-clicked(input.text);
+                word-typed("enter");
             }else{
                 word-typed(event.text);
             }
@@ -77,7 +80,7 @@ export component Calc inherits Window {
                 padding-right: 5px;
                 Button-comp {
                     text: "AC";
-                    clicked => {root.inputo = ""}
+                    clicked => {root.inputo = "0"}
                 }
 
                 Button-comp {
@@ -137,12 +140,13 @@ export component Calc inherits Window {
 
                 Row {
                     Button {
+                        clicked => {Button-comp-click.button-pressed(self.text); } 
                         colspan: 2;
                         text: "0";
                     }
 
                     Button-comp {
-                        text: ",";
+                        text: ".";
                         col: 2;
                     }
                 }
