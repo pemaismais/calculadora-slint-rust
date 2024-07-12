@@ -1,21 +1,34 @@
-import { Button, GridBox, VerticalBox, LineEdit } from "std-widgets.slint";
-
-
-component ButtonComp inherits Button {
+import { Button, GridBox, VerticalBox, LineEdit} from "std-widgets.slint";
+export global Button-comp-click{
+    callback button-pressed(string);
+}
+export component Button-comp inherits Button {
     height: 50px;
     width: 100px;
-    clicked => {
-    }
+    clicked => {Button-comp-click.button-pressed(root.text); } 
 }
 
 export component Calc inherits Window {
     callback result-clicked(string);
+    callback word-typed(string);
     in property <string> result: "";
-    default-font-size: 18px;
+    in-out property <string> inputo: "";
+    default-font-size: 22px;
     width: 440px;
     height: 600px;
+    title: "Calculadorazuda";
 
-    // Grid main
+    my-key-handler := FocusScope {
+        key-pressed(event) => {
+            if (event.text == Key.Backspace) {
+                word-typed("delete");
+            }else{
+                word-typed(event.text);
+            }
+            accept
+        }
+    
+        // Grid main
     GridBox {
         preferred-width: 100%;
         preferred-height: 100%;
@@ -27,9 +40,8 @@ export component Calc inherits Window {
             row: 0;
             spacing: 0;
             spacing-horizontal: 0;
-            //preferred-width: 100%;
             height: 50%;
-            //spacing: 5px;
+
             // tela do historico
         Rectangle {
                 height: 70%;
@@ -43,11 +55,12 @@ export component Calc inherits Window {
             }
 
             // tela de escrita
-                input := LineEdit {
+                input := Text {
+                vertical-alignment: center;
+                text: inputo;
                 row: 1;
             }
         }
-
         // Grid dos botoes
     GridBox {
             row: 1;
@@ -62,15 +75,16 @@ export component Calc inherits Window {
                 spacing: 5px;
                 padding-bottom: 5px;
                 padding-right: 5px;
-                ButtonComp {
+                Button-comp {
                     text: "AC";
+                    clicked => {root.inputo = ""}
                 }
 
-                ButtonComp {
+                Button-comp {
                     text: "+/-";
                 }
 
-                ButtonComp {
+                Button-comp {
                     text: "%";
                 }
             }
@@ -80,43 +94,43 @@ export component Calc inherits Window {
                 spacing: 5px;
                 row: 1;
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "7";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "8";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "9";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "4";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "5";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "6";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "1";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "2";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: "3";
                     }
                 }
@@ -127,7 +141,7 @@ export component Calc inherits Window {
                         text: "0";
                     }
 
-                    ButtonComp {
+                    Button-comp {
                         text: ",";
                         col: 2;
                     }
@@ -141,31 +155,31 @@ export component Calc inherits Window {
                 rowspan: 2;
                 col: 1;
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "/";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "x";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "-";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "+";
                     }
                 }
 
                 Row {
-                    ButtonComp {
+                    Button-comp {
                         text: "=";
                         clicked => {
                             result-clicked(input.text);
@@ -175,4 +189,5 @@ export component Calc inherits Window {
             }
         }
     }
+}
 }
